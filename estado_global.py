@@ -5,6 +5,7 @@ status_salas = {
         "luminosidade": 0,
         "tem_tv": True,         
         "ultima_atualizacao": "-"
+        "tempo_vazia": None
     },
     "2": {
         "nome": "Sala de Estudos B", 
@@ -12,5 +13,6 @@ status_salas = {
         "luminosidade": 0,
         "tem_tv": False,        
         "ultima_atualizacao": "-"
+        "tempo_vazia": None
     }
 }
