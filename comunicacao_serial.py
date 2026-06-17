@@ -24,7 +24,7 @@ def iniciar_leitura_arduino():
                 # Atualiza apenas a sala correspondente, se ela existir no sistema
                 if id_sala in status_salas:
                     status_salas[id_sala]["ocupada"] = (presenca == 1)
-                    status_salas[id_sala]["luminosidade"] = luz
+                    status_salas[id_sala]["luz"] = (luz == 1)
                     status_salas[id_sala]["ultima_atualizacao"] = time.strftime("%H:%M:%S")
                     
                     if presenca == 1:

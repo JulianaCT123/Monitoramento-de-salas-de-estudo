@@ -2,17 +2,19 @@ status_salas = {
     "1": {
         "nome": "Sala de Estudos A", 
         "ocupada": False, 
-        "luminosidade": 0,
-        "tem_tv": True,         
-        "ultima_atualizacao": "-"
+        "luz": False,
+        "tem_tv": True,
+        "lugares": 5,        
+        "ultima_atualizacao": "-",
         "tempo_vazia": None
     },
     "2": {
         "nome": "Sala de Estudos B", 
         "ocupada": False, 
-        "luminosidade": 0,
-        "tem_tv": False,        
-        "ultima_atualizacao": "-"
+        "luz":False,
+        "tem_tv": False,  
+        "lugares": 5,     
+        "ultima_atualizacao": "-",
         "tempo_vazia": None
     }
 }
