@@ -6,7 +6,8 @@ status_salas = {
         "tem_tv": True,
         "lugares": 5,        
         "ultima_atualizacao": "-",
-        "tempo_vazia": None
+        "tempo_vazia": None,
+        "tempo_ocupacao": None
     },
     "2": {
         "nome": "Sala de Estudos B", 
@@ -15,6 +16,9 @@ status_salas = {
         "tem_tv": False,  
         "lugares": 5,     
         "ultima_atualizacao": "-",
-        "tempo_vazia": None
+        "tempo_vazia": None,
+        "tempo_ocupacao": None
     }
 }
+
+historico_eventos = []
