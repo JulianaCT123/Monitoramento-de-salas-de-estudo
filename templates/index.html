@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Campus - IoT Dashboard</title>
+    <style>
+        :root {
+            --bg-principal: #0f172a;       /* Azul escuro profundo (Slate 900) */
+            --bg-card: #1e293b;            /* Grafite azulado (Slate 800) */
+            --texto-principal: #f8fafc;    /* Branco fosco */
+            --texto-secundario: #94a3b8;   /* Cinza claro */
+            --cor-livre: #10b981;          /* Esmeralda Neon */
+            --cor-livre-glow: rgba(16, 185, 129, 0.25);
+            --cor-ocupada: #f43f5e;        /* Coral/Vermelho Neon */
+            --cor-ocupada-glow: rgba(244, 63, 94, 0.25);
+            --borda-tech: #334155;         /* Slate 700 */
+            --azul-neon: #0ea5e9;          /* Ciano Tech */
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-principal);
+            color: var(--texto-principal);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            margin: 0 0 10px 0;
+            background: linear-gradient(to right, #38bdf8, #0284c7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitulo {
+            color: var(--texto-secundario);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin: 0;
+        }
+
+        .container-grids {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1050px;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+
+        .card-sala {
+            background: var(--bg-card);
+            border: 1px solid var(--borda-tech);
+            border-radius: 16px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+        }
+
+        .card-sala::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--borda-tech);
+            transition: background 0.3s;
+        }
+
+        /* Estados dinâmicos de iluminação e bordas superiores dos cards */
+        .card-livre::before { background: var(--cor-livre); }
+        .card-livre { box-shadow: 0 0 25px -5px var(--cor-livre-glow); }
+
+        .card-ocupada::before { background: var(--cor-ocupada); }
+        .card-ocupada { box-shadow: 0 0 25px -5px var(--cor-ocupada-glow); }
+
+        .header-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .nome-sala {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 0;
+            color: #ffffff;
+        }
+
+        .badge-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 6px 14px;
+            border-radius: 20px;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Indicador brilhante pulsante */
+        .ponto-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .ponto-livre { background-color: var(--cor-livre); }
+        .ponto-livre::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--cor-livre);
+            border-radius: 50%;
+            animation: pulsar 1.5s infinite;
+        }
+
+        .ponto-ocupada { background-color: var(--cor-ocupada); }
+        .ponto-ocupada::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--cor-ocupada);
+            border-radius: 50%;
+            animation: pulsar 1.5s infinite;
+        }
+
+        @keyframes pulsar {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+
+        .item-info {
+            display: flex;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.25);
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            font-size: 0.95rem;
+        }
+
+        .item-info .icone {
+            font-size: 1.2rem;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        .item-info .label {
+            color: var(--texto-secundario);
+            margin-right: 6px;
+        }
+
+        .item-info .valor {
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .rodape-card {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.8rem;
+            color: var(--texto-secundario);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Telas de erro ou carregamento */
+        .aviso-sistema {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px dashed var(--borda-tech);
+            color: var(--texto-secundario);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>SMART CAMPUS</h1>
+        <p class="subtitulo">Monitoramento de Infraestrutura</p>
+    </header>
+    
+    <div class="container-grids" id="dashboard-container">
+        <div class="aviso-sistema">Sincronizando com a rede de sensores da Raspberry Pi...</div>
+    </div>
+
+    <script>
+        const API_URL = '/api/salas'; 
+        const container = document.getElementById('dashboard-container');
+
+        async function atualizarPainel() {
+            try {
+                const resposta = await fetch(API_URL);
+                if (!resposta.ok) throw new Error(`Status HTTP: ${resposta.status}`);
+
+                const dadosSalas = await resposta.json();
+                container.innerHTML = '';
+
+                Object.values(dadosSalas).forEach(sala => {
+                    // Configurações condicionais baseadas no estado da sala
+                    const classeCard = sala.ocupada ? 'card-ocupada' : 'card-livre';
+                    const classePonto = sala.ocupada ? 'ponto-ocupada' : 'ponto-livre';
+                    const textoStatus = sala.ocupada ? 'Em Uso' : 'Disponível';
+                    
+                    // Tratamento visual para o estado binário da iluminação (0 ou 1 / False ou True)
+                    const statusLuzText = sala.luz ? 'Ligada' : 'Desligada';
+                    const iconeLuz = sala.luz ? '💡' : '🌑';
+
+                    // Bloco opcional para TV
+                    const blocoTv = sala.tem_tv ? `
+                        <div class="item-info">
+                            <span class="icone">📺</span>
+                            <span class="label">Recurso:</span>
+                            <span class="valor">Possui TV</span>
+                        </div>
+                    ` : '';
+
+                    const cardHTML = `
+                        <div class="card-sala ${classeCard}">
+                            <div class="header-card">
+                                <h2 class="nome-sala">${sala.nome}</h2>
+                                <div class="badge-status">
+                                    <span class="ponto-status ${classePonto}"></span>
+                                    ${textoStatus}
+                                </div>
+                            </div>
+                            
+                            <div class="info-grid">
+                                <div class="item-info">
+                                    <span class="icone">🪑</span>
+                                    <span class="label">Capacidade:</span>
+                                    <span class="valor">${sala.lugares} lugares</span>
+                                </div>
+                                <div class="item-info">
+                                    <span class="icone">${iconeLuz}</span>
+                                    <span class="label">Iluminação:</span>
+                                    <span class="valor">${statusLuzText}</span>
+                                </div>
+                                ${blocoTv}
+                            </div>
+                            
+                            <div class="rodape-card">
+                                <span>Ref: ID ${sala.nome.split(' ').pop()}</span>
+                                <span>Atualizado: ${sala.ultima_atualizacao}</span>
+                            </div>
+                        </div>
+                    `;
+                    
+                    container.insertAdjacentHTML('beforeend', cardHTML);
+                });
+
+            } catch (erro) {
+                console.error("Erro na comunicação com a API:", erro);
+                container.innerHTML = `
+                    <div class="aviso-sistema" style="border-color: var(--cor-ocupada); color: var(--cor-ocupada)">
+                        ⚠️ link_down: Falha na conexão com os serviços centrais da Raspberry Pi. Verifique os scripts de rede.
+                    </div>
+                `;
+            }
+        }
+
+        // Execuções
+        atualizarPainel();
+        setInterval(atualizarPainel, 500);
+    </script>
+
+</body>
+</html>
